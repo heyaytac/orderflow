@@ -3,93 +3,36 @@
 <head>
     <title>Restaurant Order Form</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            margin: 0;
-            padding: 0;
-            background-color: #f4f4f4;
-        }
-        .container {
-            width: 80%;
-            margin: auto;
-            overflow: hidden;
-        }
-        #orderForm {
-            background: #fff;
-            margin: 30px 0;
-            padding: 20px;
-            border-radius: 5px;
-            box-shadow: 0px 0px 10px #aaa;
-        }
-        .order-item {
-            margin-bottom: 20px;
-        }
-        .order-item label {
-            display: block;
-            margin-bottom: 5px;
-        }
-        #basket {
-            background: #fff;
-            margin: 30px 0;
-            padding: 20px;
-            border-radius: 5px;
-            box-shadow: 0px 0px 10px #aaa;
-        }
-        .basket-item {
-            margin-bottom: 10px;
-            padding: 10px;
-            border-bottom: 1px solid #eee;
-            color: red;
-        }
-        .basket-item.finished {
-            color: green;
-        }
-        input, select, button {
-            padding: 10px;
-            font-size: 18px;
-        }
-        button {
-            background-color: #007BFF;
-            color: white;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-        }
-        button:hover {
-            background-color: #0056b3;
-        }
-        @media (max-width: 600px) {
-            .container {
-                width: 100%;
-            }
-            #orderForm, #basket {
-                padding: 10px;
-            }
-            .order-item label, .basket-item {
-                font-size: 18px;
-            }
-        }
-    </style>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="style.css">
+    <meta charset="UTF-8">
 </head>
 <body>
     <div class="container">
-        <h1>Restaurant Order Form</h1>
+        <h1>Roni Döner</h1>
+        <div id="foodDashboard">
+            <button class="food-button" data-food="Kebap">Kebap</button>
+            <button class="food-button" data-food="Pizza">Pizza</button>
+            <button class="food-button" data-food="Pide">Pide</button>
+            <button class="food-button" data-food="Getränke">Getränke</button>
+        </div>
         <form id="orderForm">
-            <div class="order-item">
-                <label for="food">Food Item:</label>
-                <select id="food">
-                    <option value="kebap">Kebap</option>
-                    <option value="pizza">Pizza</option>
-                    <option value="fried">Fried</option>
-                </select>
-            </div>
             <div class="order-item" id="toppings">
                 <!-- Toppings will be added here by JavaScript -->
             </div>
             <div class="order-item">
                 <label for="quantity">Quantity:</label>
                 <input type="number" id="quantity" min="1" value="1" required>
+            </div>
+            <div class="order-item">
+                <label for="pickupTime">Pickup Time:</label>
+                <select id="pickupTime">
+                    <option value="0">0 minutes</option>                  
+                    <option value="10">10 minutes</option>
+                    <option value="15">15 minutes</option>
+                    <option value="20">20 minutes</option>
+                    <option value="30">30 minutes</option>
+                </select>
             </div>
             <button type="submit">Add to Basket</button>
         </form>
@@ -100,89 +43,10 @@
                 <!-- Orders will be added here by JavaScript -->
             </div>
         </div>
+        <div id="customerOrders"></div>
+        <button id="groupButton">Group Orders</button>
         <button id="confirmButton">Confirm Order</button>
-    </div>
-    <script>
-        var toppingsForFood = {
-            kebap: ['Full toppings', 'Without A', 'Without B'],
-            pizza: ['Sucuk', 'Onions', 'Champignons'],
-            fried: ['Small', 'Large']
-        };
-
-        document.getElementById('food').addEventListener('change', function() {
-            var food = document.getElementById('food').value;
-            var toppingsDiv = document.getElementById('toppings');
-            toppingsDiv.innerHTML = '';
-            var toppings = toppingsForFood[food];
-            toppings.forEach(function(topping) {
-                var checkbox = document.createElement('input');
-                checkbox.type = 'checkbox';
-                checkbox.id = topping;
-                checkbox.name = 'toppings';
-                checkbox.value = topping;
-                var label = document.createElement('label');
-                label.htmlFor = topping;
-                label.textContent = topping;
-                toppingsDiv.appendChild(checkbox);
-                toppingsDiv.appendChild(label);
-                toppingsDiv.appendChild(document.createElement('br'));
-            });
-        });
-
-        document.getElementById('orderForm').addEventListener('submit', function(event) {
-            event.preventDefault(); // Prevent the form from submitting normally
-
-            var food = document.getElementById('food').value;
-            var quantity = document.getElementById('quantity').value;
-            var toppings = Array.from(document.querySelectorAll('input[name="toppings"]:checked')).map(function(checkbox) {
-                return checkbox.value;
-            });
-
-            var timestamp = new Date().toLocaleString();
-
-            var orders = document.getElementById('orders');
-            var basketItem = document.createElement('div');
-            basketItem.classList.add('basket-item');
-            basketItem.textContent = 'Food: ' + food + ', Toppings: ' + toppings.join(', ') + ', Quantity: ' + quantity + ', Timestamp: ' + timestamp;
-
-            var checkbox = document.createElement('input');
-            checkbox.type = 'checkbox';
-            checkbox.addEventListener('change', function() {
-                if (this.checked) {
-                    basketItem.classList.add('finished');
-                } else {
-                    basketItem.classList.remove('finished');
-                }
-            });
-            basketItem.appendChild(checkbox);
-
-            orders.appendChild(basketItem);
-
-            // Clear the form for the next item
-            document.getElementById('food').value = 'kebap';
-            document.getElementById('quantity').value = 1;
-            Array.from(document.querySelectorAll('input[name="toppings"]:checked')).forEach(function(checkbox) {
-                checkbox.checked = false;
-            });
-        });
-
-        document.getElementById('confirmButton').addEventListener('click', function() {
-            var basketItems = Array.from(document.querySelectorAll('.basket-item'));
-            var data = 'Food,Toppings,Quantity,Timestamp\n';
-            basketItems.forEach(function(item) {
-                var food = item.textContent.split(', ')[0].split(': ')[1];
-                var toppings = item.textContent.split(', ')[1].split(': ')[1];
-                var quantity = item.textContent.split(', ')[2].split(': ')[1];
-                var timestamp = item.textContent.split(', ')[3].split(': ')[1];
-                data += food + ',' + toppings + ',' + quantity + ',' + timestamp + '\n';
-            });
-            var blob = new Blob([data], {type: 'text/csv'});
-            var url = URL.createObjectURL(blob);
-            var link = document.createElement('a');
-            link.href = url;
-            link.download = 'order.csv';
-            link.click();
-        });
-    </script>
+    </div>      
+<script src="script.js"></script>
 </body>
 </html>
