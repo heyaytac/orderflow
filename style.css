@@ -1,0 +1,140 @@
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f4f4f4;
+  }
+  
+  .container {
+    width: 80%;
+    margin: auto;
+    overflow: hidden;
+  }
+  
+  #orderForm {
+    background: #fff;
+    margin: 30px 0;
+    padding: 20px;
+    border-radius: 5px;
+    box-shadow: 0px 0px 10px #aaa;
+  }
+  
+  .order-item {
+    margin-bottom: 20px;
+  }
+  
+  .order-item label {
+    display: block;
+    margin-bottom: 5px;
+  }
+  
+  .variant-button {
+    margin-right: 10px;
+    margin-bottom: 5px;
+  }
+  
+  #basket {
+    background: #fff;
+    margin: 30px 0;
+    padding: 20px;
+    border-radius: 5px;
+    box-shadow: 0px 0px 10px #aaa;
+  }
+  
+  .basket-item {
+    margin-bottom: 10px;
+    padding: 10px;
+    border-bottom: 1px solid #eee;
+    color: red;
+  }
+  
+  .basket-item.finished {
+    color: green;
+  }
+  
+  .remove-button {
+    background-color: #dc3545;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    padding: 5px 10px;
+    margin-left: 10px;
+  }
+  
+  input,
+  select,
+  button {
+    padding: 10px;
+    font-size: 18px;
+  }
+  
+  button {
+    padding: 10px;
+    font-size: 18px;
+    background-color: #007BFF;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+  
+  button:hover {
+    background-color: #0056b3;
+  }
+  
+  .food-button {
+    display: inline-block;
+    width: 100px;
+    height: 100px;
+    margin: 10px;
+    background-color: #007BFF;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    text-align: center;
+    line-height: 100px;
+  }
+  
+  .food-button:hover {
+    background-color: #0056b3;
+  }
+  
+  .basket-item {
+    margin-bottom: 10px;
+    padding: 10px;
+    border-bottom: 1px solid #eee;
+  }
+  
+  .basket-item button {
+    margin-right: 10px;
+  }
+  
+  .finished-button {
+    background-color: green;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    padding: 5px 10px;
+    cursor: pointer;
+  }
+  
+  .finished-button:hover {
+    background-color: darkgreen;
+  }
+  
+  @media (max-width: 600px) {
+    .container {
+      width: 100%;
+    }
+    #orderForm,
+    #basket {
+      padding: 10px;
+    }
+    .order-item label,
+    .basket-item {
+      font-size: 18px;
+    }
+  }
+  
