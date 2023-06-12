@@ -65,6 +65,7 @@ var toppingsForFood = {
           var toppingsDiv = document.getElementById('toppings');
           toppingsDiv.innerHTML = '';
           if (food === 'Pizza' || food === 'Kebap' || food === 'Pide') {
+            selectedDrinkVariant = '';
             var foodVariants = Object.keys(toppingsForFood[food]);
             foodVariants.forEach(function(variant) {
               var variantButton = document.createElement('button');
@@ -78,6 +79,7 @@ var toppingsForFood = {
               toppingsDiv.appendChild(variantButton);
             });
           } else if (food === 'Getränke') {
+            selectedPizzaVariant = '';
             var drinkVariants = toppingsForFood[food];
             drinkVariants.forEach(function(variant) {
               var variantButton = document.createElement('button');
@@ -101,7 +103,7 @@ var toppingsForFood = {
       var toppingsDiv = document.getElementById('toppings');
       toppingsDiv.innerHTML = '';
       var variantLabel = document.createElement('h3');
-      variantLabel.textContent = selectedPizzaVariant || selectedDrinkVariant;
+      variantLabel.textContent = selectedPizzaVariant;
       toppingsDiv.appendChild(variantLabel);
       toppings.forEach(function(topping) {
           var checkbox = document.createElement('input');
@@ -229,5 +231,4 @@ var toppingsForFood = {
       link.download = 'order.csv';
       link.click();
   });
-  
   
