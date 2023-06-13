@@ -128,6 +128,7 @@ var toppingsForFood = {
       var toppings = Array.from(document.querySelectorAll('input[name="toppings"]:checked')).map(function(checkbox) {
           return checkbox.value;
       });
+      var toppingsString = toppings.join(',');
       var timestamp = new Date().toLocaleString();
       var basket = document.getElementById('basket');
       var basketItem = document.createElement('div');
@@ -188,6 +189,14 @@ var toppingsForFood = {
           checkbox.checked = false;
       });
   });
+
+  document.getElementById('clearOrdersButton').addEventListener('click', function() {
+    var confirmClear = confirm('Are you sure you want to clear all orders?');
+    if (confirmClear) {
+      var basket = document.getElementById('basket');
+      basket.innerHTML = ''; // Remove all child elements
+    }
+  });
   
   var groupButton = document.getElementById('groupButton');
   
@@ -213,22 +222,27 @@ var toppingsForFood = {
   });
   
   document.getElementById('confirmButton').addEventListener('click', function() {
-      var basketItems = Array.from(document.querySelectorAll('.basket-item'));
-      var data = 'Food,Variant,Toppings,Quantity,Timestamp\n';
-      
-      basketItems.forEach(function(item) {
-          var food = item.textContent.split(', ')[1].split(': ')[1];
-          var variant = item.textContent.split(', ')[2].split(': ')[1];
-          var toppings = item.textContent.split(', ')[3].split(': ')[1];
-          var quantity = item.textContent.split(', ')[4].split(': ')[1];
-          var timestamp = item.textContent.split(', ')[5].split(': ')[1];
-          data += '"' + food + '","' + variant + '","' + toppings + '","' + quantity + '","' + timestamp + '"\n';
-      });
-  
-      var blob = new Blob([data], { type: 'text/csv' });
-      var link = document.createElement('a');
-      link.href = URL.createObjectURL(blob);
-      link.download = 'order.csv';
-      link.click();
-  });
+    var basketItems = Array.from(document.querySelectorAll('.basket-item'));
+    var csvData = 'Food,Variant,Toppings,Quantity,Timestamp\n';
+
+    basketItems.forEach(function(item) {
+        var food = item.textContent.split(', ')[1].split(': ')[1];
+        var variant = item.textContent.split(', ')[2].split(': ')[1];
+        var toppingsString = item.textContent.split(', ')[3].split(': ')[1];
+        var quantity = item.textContent.split(', ')[4].split(': ')[1];
+        var timestamp = item.textContent.split(', ')[5].split(': ')[1];
+
+        // Clean up the toppings string
+        var toppings = toppingsString.replace('Toppings: ', '' + '');
+
+        csvData += '"' + food + '","' + variant + '","' + toppings + '","' + quantity + '","' + timestamp + '"\n';
+    });
+
+    var blob = new Blob([csvData], { type: 'text/csv' });
+    var link = document.createElement('a');
+    link.href = URL.createObjectURL(blob);
+    link.download = 'order.csv';
+    link.click();
+});
+
   
