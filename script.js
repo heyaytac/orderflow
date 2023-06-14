@@ -63,7 +63,7 @@ var toppingsForFood = {
           this.classList.add('active');
           var food = this.dataset.food;
           var toppingsDiv = document.getElementById('toppings');
-          toppingsDiv.innerHTML = '';
+          toppingsDiv.textContent = '';
           if (food === 'Pizza' || food === 'Kebap' || food === 'Pide') {
             selectedDrinkVariant = '';
             var foodVariants = Object.keys(toppingsForFood[food]);
@@ -99,13 +99,13 @@ var toppingsForFood = {
       });
     
   
-  function showToppings(toppings) {
-      var toppingsDiv = document.getElementById('toppings');
-      toppingsDiv.innerHTML = '';
-      var variantLabel = document.createElement('h3');
-      variantLabel.textContent = selectedPizzaVariant;
-      toppingsDiv.appendChild(variantLabel);
-      toppings.forEach(function(topping) {
+      function showToppings(toppings) {
+        toppingsDiv.textContent = '';
+        var variantLabel = document.createElement('h3');
+        variantLabel.textContent = selectedPizzaVariant;
+        toppingsDiv.appendChild(variantLabel);
+      
+        toppings.forEach(function (topping) {
           var checkbox = document.createElement('input');
           checkbox.type = 'checkbox';
           checkbox.id = topping;
@@ -117,8 +117,9 @@ var toppingsForFood = {
           toppingsDiv.appendChild(checkbox);
           toppingsDiv.appendChild(label);
           toppingsDiv.appendChild(document.createElement('br'));
-      });
-  }
+        });
+      }
+      
   
   document.getElementById('orderForm').addEventListener('submit', function(event) {
       event.preventDefault();
@@ -200,13 +201,13 @@ var toppingsForFood = {
   
   var groupButton = document.getElementById('groupButton');
   
-  groupButton.addEventListener('click', function() {
+groupButton.addEventListener('click', function() {
       var checkedOrders = Array.from(document.querySelectorAll('.order-checkbox:checked'));
       if (checkedOrders.length === 0) {
           alert('No orders selected');
           return;
       }
-  
+
       var basket = document.getElementById('basket');
       var groupItem = document.createElement('div');
       groupItem.classList.add('basket-item');
@@ -219,30 +220,66 @@ var toppingsForFood = {
       });
   
       basket.appendChild(groupItem);
-  });
-  
-  document.getElementById('confirmButton').addEventListener('click', function() {
-    var basketItems = Array.from(document.querySelectorAll('.basket-item'));
-    var csvData = 'Food,Variant,Toppings,Quantity,Timestamp\n';
-
-    basketItems.forEach(function(item) {
-        var food = item.textContent.split(', ')[1].split(': ')[1];
-        var variant = item.textContent.split(', ')[2].split(': ')[1];
-        var toppingsString = item.textContent.split(', ')[3].split(': ')[1];
-        var quantity = item.textContent.split(', ')[4].split(': ')[1];
-        var timestamp = item.textContent.split(', ')[5].split(': ')[1];
-
-        // Clean up the toppings string
-        var toppings = toppingsString.replace('Toppings: ', '' + '');
-
-        csvData += '"' + food + '","' + variant + '","' + toppings + '","' + quantity + '","' + timestamp + '"\n';
     });
 
-    var blob = new Blob([csvData], { type: 'text/csv' });
-    var link = document.createElement('a');
-    link.href = URL.createObjectURL(blob);
-    link.download = 'order.csv';
-    link.click();
-});
 
-  
+    confirmButton.addEventListener('click', function () {
+        var basketItems = Array.from(document.querySelectorAll('.basket-item'));
+        var orderData = [];
+      
+        basketItems.forEach(function (item) {
+          var orderText = item.textContent;
+          var orderDetails = orderText.split(', ');
+          var order = {
+            food: '',
+            variant: '',
+            toppings: [],
+            quantity: '',
+            timestamp: ''
+          };
+      
+          orderDetails.forEach(function (detail) {
+            var [label, ...values] = detail.split(':');
+            label = label.trim();
+            var value = values.join(':').trim();
+      
+            if (label === 'Food') {
+              order.food = value;
+            } else if (label === 'Variant') {
+              order.variant = value;
+            } else if (label === 'Toppings') {
+              order.toppings = value.split(',').map((topping) => topping.trim());
+            } else if (label === 'Quantity') {
+              order.quantity = value;
+            } else if (label === 'Timestamp') {
+              order.timestamp = value;
+            }
+          });
+      
+          orderData.push(order);
+        });
+      
+        var htmlTemplate = `
+          <h1>Order Details</h1>
+          <ul>
+            ${orderData
+              .map(
+                (order) => `
+                  <li>
+                    <strong>Food:</strong> ${order.food}<br>
+                    <strong>Variant:</strong> ${order.variant}<br>
+                    <strong>Toppings:</strong> ${order.toppings.join(', ')}<br>
+                    <strong>Quantity:</strong> ${order.quantity}<br>
+                    <strong>Timestamp:</strong> ${order.timestamp}
+                  </li>
+                `
+              )
+              .join('')}
+          </ul>
+        `;
+      
+        html2pdf()
+          .from(htmlTemplate)
+          .save('order.pdf');
+      });
+      
