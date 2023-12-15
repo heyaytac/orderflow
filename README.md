@@ -11,4 +11,9 @@ Update:
 - CSS: button color for food and variant changed to black.
 - JS: Order confirmation will be saved as PDF not as CSV anymore.
 
+Update:
+- HTML: Login Field
+
+V.1.1.3 Date: 15.12.23 Time: 4PM
+
   
