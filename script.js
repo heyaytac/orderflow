@@ -1,5 +1,25 @@
 var customerCount = 1;
+document.getElementById('loginForm').addEventListener('submit', function(event) {
+  event.preventDefault();
+  
+  // Hardcoded credentials
+  var correctUsername = 'admin';
+  var correctPassword = 'password123';
 
+  // User input
+  var username = document.getElementById('username').value;
+  var password = document.getElementById('password').value;
+
+  // Check if the entered credentials match the hardcoded ones
+  if (username === correctUsername && password === correctPassword) {
+      // Credentials are correct, hide login and show main content
+      document.getElementById('loginContainer').style.display = 'none';
+      document.querySelector('.container').style.display = 'block';
+  } else {
+      // Credentials are incorrect, show an error message
+      alert('Incorrect username or password');
+  }
+});
 var toppingsForFood = {
     Kebap: {
         'Drehspieß': ['mit Cocktailsauce', 'Topping 2', 'Topping 3'],

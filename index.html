@@ -8,7 +8,20 @@
     <meta charset="UTF-8">
 </head>
 <body>
-    <div class="container">
+    <div id="loginContainer">
+    <form id="loginForm">
+        <div>
+            <label for="username">Username:</label>
+            <input type="text" id="username" required>
+        </div>
+        <div>
+            <label for="password">Password:</label>
+            <input type="password" id="password" required>
+        </div>
+        <button type="submit">Login</button>
+    </form>
+</div>
+    <div class="container" style="display:none;">
         <h1>Roni Döner</h1>
         <div id="foodDashboard">
             <button class="food-button" data-food="Kebap">Kebap</button>
@@ -47,7 +60,9 @@
         <button id="clearOrdersButton" class="red-button">Bestellung löschen</button>
         <button id="groupButton">Bestellung gruppieren</button>
         <button id="confirmButton" class="green-button">Bestellung bestätigen</button>
-    </div>      
+    </div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.9.2/html2pdf.bundle.min.js"></script> 
 <script src="script.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.3/jspdf.umd.min.js"></script>
 </body>
 </html>
